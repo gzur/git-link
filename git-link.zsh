@@ -4,8 +4,11 @@ if [[  $? -gt 0 ]]; then
     exit 1;
 fi
 local remote=$(git remote get-url --all origin)
-if [[ "https" =~ ${remote} ]] then
-
+if [[ ${remote} =~ "https" ]] then
+    if [[ ${remote} =~ "@" ]] then
+        local remote=$(echo $remote | sed  "s/[A-z]*@//g")
+    fi
+    
     echo "Found https remote, opening repo at $remote";
     open $remote;
     exit 0;
